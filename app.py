@@ -6,10 +6,10 @@ from dashboard_ia.views import (
     render_aprendizaje,
     render_comentarios,
     render_innovacion,
+    render_left_nav,
+    render_open_nav_button,
     render_participacion,
-    render_quick_nav,
     render_reporte,
-    render_sidebar,
     render_summary,
 )
 
@@ -23,8 +23,9 @@ st.set_page_config(
 
 apply_styles()
 
-selected_view = render_sidebar()
-selected_view = render_quick_nav(selected_view)
+if "left_nav_open" not in st.session_state:
+    st.session_state.left_nav_open = True
+
 uploaded = st.session_state.get("csv_upload")
 
 try:
@@ -35,15 +36,26 @@ except Exception as e:
 
 source = "Archivo CSV cargado" if uploaded else "Datos de ejemplo"
 
-if selected_view == "📌 Resumen":
-    render_summary(df, source)
-elif selected_view == "🧩 Participación":
-    render_participacion(df)
-elif selected_view == "📘 Aprendizaje":
-    render_aprendizaje(df)
-elif selected_view == "🎨 Innovación":
-    render_innovacion(df)
-elif selected_view == "💬 Comentarios":
-    render_comentarios(df)
-elif selected_view == "📄 Reporte":
-    render_reporte(df)
+if st.session_state.left_nav_open:
+    nav_col, content_col = st.columns([0.24, 0.76], gap="large")
+    with nav_col:
+        st.markdown('<div class="custom-sidebar">', unsafe_allow_html=True)
+        selected_view = render_left_nav()
+        st.markdown("</div>", unsafe_allow_html=True)
+else:
+    selected_view = render_open_nav_button()
+    content_col = st.container()
+
+with content_col:
+    if selected_view == "📌 Resumen":
+        render_summary(df, source)
+    elif selected_view == "🧩 Participación":
+        render_participacion(df)
+    elif selected_view == "📘 Aprendizaje":
+        render_aprendizaje(df)
+    elif selected_view == "🎨 Innovación":
+        render_innovacion(df)
+    elif selected_view == "💬 Comentarios":
+        render_comentarios(df)
+    elif selected_view == "📄 Reporte":
+        render_reporte(df)

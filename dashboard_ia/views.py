@@ -25,22 +25,34 @@ def render_sidebar():
     return selected_view
 
 
-def render_quick_nav(selected_view):
-    if (
-        "quick_nav" not in st.session_state
-        or st.session_state.get("_last_sidebar_view") != selected_view
-    ):
-        st.session_state.quick_nav = selected_view
-        st.session_state._last_sidebar_view = selected_view
+def render_left_nav():
+    if "selected_view" not in st.session_state:
+        st.session_state.selected_view = NAV_OPTIONS[0]
 
-    st.markdown('<div class="quick-nav-label">Navegación rápida</div>', unsafe_allow_html=True)
-    return st.radio(
-        "Navegación rápida",
-        NAV_OPTIONS,
-        horizontal=True,
-        label_visibility="collapsed",
-        key="quick_nav",
+    st.markdown(
+        '<div class="brand custom-brand"><div class="brand-icon">📊</div><div><div class="brand-title">Analítica IA</div><div class="brand-sub">Panel de control</div></div></div>',
+        unsafe_allow_html=True,
     )
+    if st.button("✕ Ocultar panel", key="hide_left_nav", use_container_width=True):
+        st.session_state.left_nav_open = False
+        st.rerun()
+
+    st.markdown('<div class="nav-label">Secciones</div>', unsafe_allow_html=True)
+    selected_view = st.radio(
+        "Secciones",
+        NAV_OPTIONS,
+        key="selected_view",
+        label_visibility="collapsed",
+    )
+    st.markdown('<div class="custom-nav-footer">Analítica educativa para Moodle</div>', unsafe_allow_html=True)
+    return selected_view
+
+
+def render_open_nav_button():
+    if st.button("☰ Menú", key="open_left_nav"):
+        st.session_state.left_nav_open = True
+        st.rerun()
+    return st.session_state.get("selected_view", NAV_OPTIONS[0])
 
 
 def render_summary_header():

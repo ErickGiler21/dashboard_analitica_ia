@@ -8,7 +8,7 @@ def apply_styles():
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 html,body,[class*="css"]{font-family:'Inter',sans-serif!important}
 .stApp{background:#F4F7FB;color:#0F172A}
-.block-container{padding:1.2rem 1.7rem 2rem;max-width:1550px}
+.block-container{padding:1.2rem 1.7rem 2rem;max-width:1600px}
 #MainMenu,footer,[data-testid="stToolbar"],[data-testid="stDecoration"]{visibility:hidden;height:0}
 header{visibility:visible!important;height:2.75rem!important;background:transparent!important}
 [data-testid="collapsedControl"],
@@ -40,6 +40,12 @@ button[aria-label*="sidebar" i] svg{color:#FFFFFF!important;stroke:#FFFFFF!impor
 [data-testid="stFileUploader"] svg{color:#64748B!important;stroke:#64748B!important}
 [data-testid="stFileUploader"] button{background:#0F172A!important;color:#FFFFFF!important;border-radius:11px!important;font-weight:850!important;border:0!important}
 .brand{display:flex;gap:12px;align-items:center;margin:20px 0 28px}
+.custom-sidebar{background:linear-gradient(180deg,#071126,#13295B);border-radius:18px;padding:20px 18px;min-height:calc(100vh - 130px);box-shadow:0 14px 32px rgba(15,23,42,.18);position:sticky;top:76px}
+.custom-sidebar *{color:#F8FAFC!important}
+.custom-brand{margin-top:6px}
+.custom-nav-footer{border-top:1px solid rgba(255,255,255,.18);margin-top:28px;padding-top:20px;font-weight:800;font-size:13px;color:#D7E3FF!important}
+.custom-sidebar [data-testid="stButton"] button{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.22)!important;color:#FFFFFF!important;border-radius:13px!important;font-weight:850!important}
+.custom-sidebar [data-testid="stButton"] button:hover{background:rgba(255,255,255,.18)!important;border-color:rgba(255,255,255,.38)!important}
 .brand-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(135deg,#38BDF8,#7C3AED)}
 .brand-title{font-size:21px;font-weight:850;color:white}
 .brand-sub{font-size:12px;color:#D7E3FF}
@@ -66,6 +72,10 @@ div[role="radiogroup"][aria-label="Navegación rápida"] label p{font-weight:850
 [data-testid="stSidebar"] [role="radio"]{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:11px 12px;transition:all .18s ease}
 [data-testid="stSidebar"] [role="radio"]:has(input:checked){background:linear-gradient(135deg,rgba(56,189,248,.32),rgba(124,58,237,.38));border-color:rgba(255,255,255,.42);box-shadow:0 10px 22px rgba(0,0,0,.16)}
 [data-testid="stSidebar"] [role="radio"] p{font-size:15px;font-weight:850}
+.custom-sidebar [role="radiogroup"]{display:flex;flex-direction:column;gap:9px}
+.custom-sidebar [role="radio"]{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:11px 12px;transition:all .18s ease}
+.custom-sidebar [role="radio"]:has(input:checked){background:linear-gradient(135deg,rgba(56,189,248,.32),rgba(124,58,237,.38));border-color:rgba(255,255,255,.42);box-shadow:0 10px 22px rgba(0,0,0,.16)}
+.custom-sidebar [role="radio"] p{font-size:15px;font-weight:850}
 .summary-control{background:#fff;border:1px solid #CBD5E1;border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(15,23,42,.055);margin:0 0 16px}
 .summary-control-head{display:flex;gap:13px;align-items:center;margin-bottom:13px}
 .summary-control-icon{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;background:linear-gradient(135deg,#38BDF8,#7C3AED);color:#fff}
@@ -111,7 +121,7 @@ div[data-testid="stImage"] img{border:1px solid #E2E8F0;border-radius:16px;backg
 .report-line b{color:#0F172A}
 .stDownloadButton>button{background:linear-gradient(135deg,#2563EB,#7C3AED)!important;color:white!important;border:0!important;border-radius:13px!important;font-weight:850!important}
 @media(max-width:1050px){.summary-row,.summary-insights,.report-grid{grid-template-columns:1fr}.control-grid,.metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:720px){.control-grid{grid-template-columns:1fr}.block-container{padding:1rem}}
+@media(max-width:720px){.control-grid{grid-template-columns:1fr}.block-container{padding:1rem}.custom-sidebar{position:relative;top:0;min-height:auto;margin-bottom:16px}}
 </style>
         """,
         unsafe_allow_html=True,
