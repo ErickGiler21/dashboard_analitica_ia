@@ -7,7 +7,6 @@ from dashboard_ia.views import (
     render_comentarios,
     render_innovacion,
     render_participacion,
-    render_quick_nav,
     render_reporte,
     render_sidebar,
     render_summary,
@@ -24,7 +23,6 @@ st.set_page_config(
 apply_styles()
 
 selected_view = render_sidebar()
-selected_view = render_quick_nav(selected_view)
 uploaded = st.session_state.get("csv_upload")
 
 try:

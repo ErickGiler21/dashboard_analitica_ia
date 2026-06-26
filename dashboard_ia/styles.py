@@ -7,6 +7,7 @@ def apply_styles():
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 html,body,[class*="css"]{font-family:'Inter',sans-serif!important}
+html,body,.stApp{height:100%}
 .stApp{background:#F4F7FB;color:#0F172A}
 .block-container{padding:1.2rem 1.7rem 2rem;max-width:1550px}
 #MainMenu,footer,[data-testid="stToolbar"],[data-testid="stDecoration"]{visibility:hidden;height:0}
@@ -16,23 +17,12 @@ header{visibility:visible!important;height:2.75rem!important;background:transpar
 [data-testid="stSidebarCollapseButton"],
 button[title*="sidebar" i],
 button[aria-label*="sidebar" i]{
-visibility:visible!important;display:flex!important;opacity:1!important;z-index:999999!important}
-[data-testid="collapsedControl"],
-[data-testid="stSidebarCollapsedControl"]{
-position:fixed!important;top:84px!important;left:14px!important}
-[data-testid="collapsedControl"] button,
-[data-testid="stSidebarCollapsedControl"] button,
-[data-testid="stSidebarCollapseButton"],
-button[title*="sidebar" i],
-button[aria-label*="sidebar" i]{
-background:#0F1D3A!important;color:#FFFFFF!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:12px!important;box-shadow:0 10px 24px rgba(15,23,42,.28)!important;min-width:38px!important;min-height:38px!important}
-[data-testid="collapsedControl"] svg,
-[data-testid="stSidebarCollapsedControl"] svg,
-[data-testid="stSidebarCollapseButton"] svg,
-button[title*="sidebar" i] svg,
-button[aria-label*="sidebar" i] svg{color:#FFFFFF!important;stroke:#FFFFFF!important}
+visibility:hidden!important;display:none!important;opacity:0!important;pointer-events:none!important}
 [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"]{display:none!important}
-[data-testid="stSidebar"]{background:linear-gradient(180deg,#071126,#13295B)!important}
+[data-testid="stAppViewContainer"]{height:100vh!important;overflow:hidden!important}
+[data-testid="stMain"]{height:100vh!important;overflow-y:auto!important}
+[data-testid="stSidebar"]{height:100vh!important;min-height:100vh!important;overflow:hidden!important;background:linear-gradient(180deg,#071126,#13295B)!important}
+[data-testid="stSidebarContent"]{height:100vh!important;overflow-y:auto!important;padding-bottom:2rem!important}
 [data-testid="stSidebar"] *{color:#F8FAFC!important}
 [data-testid="stFileUploader"] label,[data-testid="stFileUploader"] p,[data-testid="stFileUploader"] small,[data-testid="stFileUploader"] span{color:#334155!important}
 [data-testid="stFileUploader"] section{background:#F8FAFC!important;border:1px dashed #94A3B8!important;border-radius:16px!important;padding:14px!important}
@@ -56,12 +46,7 @@ button[aria-label*="sidebar" i] svg{color:#FFFFFF!important;stroke:#FFFFFF!impor
 .section-title{font-size:17px;font-weight:850;color:#0F172A;margin-bottom:4px}
 .section-sub{font-size:13px;color:#64748B;margin-bottom:13px}
 .nav-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:850;color:#C7D2FE;margin:0 0 8px}
-.quick-nav-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:850;color:#475569;margin:0 0 8px}
-div[role="radiogroup"][aria-label="Navegación rápida"],
 div[role="radiogroup"]{gap:8px}
-div[role="radiogroup"][aria-label="Navegación rápida"] label{
-background:#FFFFFF;border:1px solid #CBD5E1;border-radius:999px;padding:8px 11px;box-shadow:0 6px 16px rgba(15,23,42,.04)}
-div[role="radiogroup"][aria-label="Navegación rápida"] label p{font-weight:850;color:#0F172A}
 [data-testid="stSidebar"] [role="radiogroup"]{display:flex;flex-direction:column;gap:9px}
 [data-testid="stSidebar"] [role="radio"]{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:11px 12px;transition:all .18s ease}
 [data-testid="stSidebar"] [role="radio"]:has(input:checked){background:linear-gradient(135deg,rgba(56,189,248,.32),rgba(124,58,237,.38));border-color:rgba(255,255,255,.42);box-shadow:0 10px 22px rgba(0,0,0,.16)}
