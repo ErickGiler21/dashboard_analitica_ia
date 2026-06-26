@@ -25,6 +25,24 @@ def render_sidebar():
     return selected_view
 
 
+def render_quick_nav(selected_view):
+    if (
+        "quick_nav" not in st.session_state
+        or st.session_state.get("_last_sidebar_view") != selected_view
+    ):
+        st.session_state.quick_nav = selected_view
+        st.session_state._last_sidebar_view = selected_view
+
+    st.markdown('<div class="quick-nav-label">Navegación rápida</div>', unsafe_allow_html=True)
+    return st.radio(
+        "Navegación rápida",
+        NAV_OPTIONS,
+        horizontal=True,
+        label_visibility="collapsed",
+        key="quick_nav",
+    )
+
+
 def render_summary_header():
     st.markdown(
         '<div class="main-title"><h1>Panel de Analítica Asistida por IA</h1><p>Seguimiento de participación, aprendizaje, innovación y satisfacción del curso.</p></div>',
