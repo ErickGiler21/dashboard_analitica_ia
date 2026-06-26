@@ -33,14 +33,15 @@ def render_quick_nav(selected_view):
         st.session_state.quick_nav = selected_view
         st.session_state._last_sidebar_view = selected_view
 
-    st.markdown('<div class="quick-nav-label">Navegación rápida</div>', unsafe_allow_html=True)
-    return st.radio(
-        "Navegación rápida",
-        NAV_OPTIONS,
-        horizontal=True,
-        label_visibility="collapsed",
-        key="quick_nav",
-    )
+    with st.expander("☰ Navegación rápida", expanded=False):
+        st.caption("Úsala solo si el panel izquierdo queda oculto en el navegador.")
+        return st.radio(
+            "Navegación rápida",
+            NAV_OPTIONS,
+            horizontal=True,
+            label_visibility="collapsed",
+            key="quick_nav",
+        )
 
 
 def render_summary_header():
