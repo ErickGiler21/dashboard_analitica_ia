@@ -11,9 +11,26 @@ html,body,[class*="css"]{font-family:'Inter',sans-serif!important}
 .block-container{padding:1.2rem 1.7rem 2rem;max-width:1550px}
 #MainMenu,footer,[data-testid="stToolbar"],[data-testid="stDecoration"]{visibility:hidden;height:0}
 header{visibility:visible!important;height:2.75rem!important;background:transparent!important}
-[data-testid="collapsedControl"]{visibility:visible!important;display:flex!important;opacity:1!important;z-index:999999!important;position:fixed!important;top:84px!important;left:14px!important}
-[data-testid="collapsedControl"] button{background:#0F1D3A!important;color:#FFFFFF!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:12px!important;box-shadow:0 10px 24px rgba(15,23,42,.28)!important}
-[data-testid="collapsedControl"] svg{color:#FFFFFF!important;stroke:#FFFFFF!important}
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+[data-testid="stSidebarCollapseButton"],
+button[title*="sidebar" i],
+button[aria-label*="sidebar" i]{
+visibility:visible!important;display:flex!important;opacity:1!important;z-index:999999!important}
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"]{
+position:fixed!important;top:84px!important;left:14px!important}
+[data-testid="collapsedControl"] button,
+[data-testid="stSidebarCollapsedControl"] button,
+[data-testid="stSidebarCollapseButton"],
+button[title*="sidebar" i],
+button[aria-label*="sidebar" i]{
+background:#0F1D3A!important;color:#FFFFFF!important;border:1px solid rgba(255,255,255,.35)!important;border-radius:12px!important;box-shadow:0 10px 24px rgba(15,23,42,.28)!important;min-width:38px!important;min-height:38px!important}
+[data-testid="collapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] svg,
+[data-testid="stSidebarCollapseButton"] svg,
+button[title*="sidebar" i] svg,
+button[aria-label*="sidebar" i] svg{color:#FFFFFF!important;stroke:#FFFFFF!important}
 [data-testid="stSidebar"]{background:linear-gradient(180deg,#071126,#13295B)!important}
 [data-testid="stSidebar"] *{color:#F8FAFC!important}
 [data-testid="stFileUploader"] label,[data-testid="stFileUploader"] p,[data-testid="stFileUploader"] small,[data-testid="stFileUploader"] span{color:#334155!important}
