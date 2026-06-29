@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel de Analítica Asistida por IA</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;--ink:#0f172a;--muted:#52637a;--line:#cbd5e1;--panel:#ffffff;
+      --nav:#071126;--nav2:#13295b;--blue:#2563eb;--violet:#7c3aed;--green:#10b981;
+      --orange:#f59e0b;--red:#ef4444;--cyan:#06b6d4;
+    }
+    *{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+    body{overflow:hidden}.app{display:grid;grid-template-columns:280px minmax(0,1fr);height:100vh}
+    aside{background:linear-gradient(180deg,var(--nav),var(--nav2));color:#fff;padding:28px 24px;overflow:auto}
+    main{overflow:auto;padding:34px 36px 48px}.brand{display:flex;gap:12px;align-items:center;margin:20px 0 36px}
+    .brand-icon{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-size:25px;background:linear-gradient(135deg,#38bdf8,var(--violet))}
+    .brand-title{font-size:21px;font-weight:850}.brand-sub{font-size:12px;color:#d7e3ff;font-weight:700;margin-top:3px}
+    .nav-label,.section-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:850;color:#c7d2fe;margin:0 0 10px}
+    .section-label{color:#475569;margin:24px 0 12px}.nav{display:grid;gap:9px}.nav button{width:100%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:#fff;text-align:left;border-radius:14px;padding:12px 13px;font-size:15px;font-weight:850;cursor:pointer}
+    .nav button.active{background:linear-gradient(135deg,rgba(56,189,248,.32),rgba(124,58,237,.38));border-color:rgba(255,255,255,.45)}
+    .sidebar-foot{border-top:1px solid rgba(255,255,255,.22);margin-top:34px;padding-top:24px;font-size:13px;font-weight:800;color:#d7e3ff}
+    h1{font-size:31px;margin:0 0 10px;letter-spacing:0}p{line-height:1.55}.lead{color:#334155;margin:0 0 28px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 22px rgba(15,23,42,.055)}
+    .status{padding:18px;margin-bottom:24px}.status-head{display:flex;gap:13px;align-items:center;margin-bottom:14px}.status-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .small-card{background:#f8fafc;border:1px solid #d8e2ef;border-radius:14px;padding:13px}.label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:850;margin-bottom:7px}.value{font-weight:850}
+    .summary-row{display:grid;grid-template-columns:minmax(260px,.34fr) minmax(0,.66fr);gap:16px;align-items:start}
+    .tools{padding:18px}.filebox{border:1px dashed #94a3b8;border-radius:16px;background:#f8fafc;padding:16px;margin:14px 0}.filebox input{max-width:100%}
+    .btn{border:0;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;font-weight:850;padding:11px 14px;cursor:pointer}
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(145px,1fr));gap:14px}.metric{padding:16px;min-height:124px}.metric-icon{float:right;width:42px;height:42px;border-radius:14px;background:#e0f2fe;display:grid;place-items:center;font-size:22px}.metric-value{font-size:29px;line-height:1;font-weight:850;margin:12px 0 9px}.metric-help{font-size:12px;color:#64748b}
+    .insights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.insight{padding:16px}.insight .big{font-size:23px;font-weight:850;margin:9px 0 6px}
+    .view{display:none}.view.active{display:block}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.chart-card{padding:16px;overflow:auto}.chart-title{font-size:18px;font-weight:850;margin:0 0 4px}.chart-sub{font-size:13px;color:#64748b;margin:0 0 14px}
+    svg{width:100%;height:auto;min-height:330px;background:#fff}.axis{stroke:#cbd5e1;stroke-width:1}.bar:hover{filter:brightness(.94)}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:#334155;margin:4px 0 12px}.dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px}
+    table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;background:#fff}.table-wrap{border:1px solid #d8e2ef;border-radius:16px;overflow:auto;max-height:460px;background:#fff}th{position:sticky;top:0;background:#eef4fb;color:#0f172a;text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}td{padding:11px 14px;border-bottom:1px solid #e2e8f0;vertical-align:top}tr:nth-child(even) td{background:#f8fafc}.tag{border-radius:999px;padding:4px 9px;font-weight:850;font-size:12px;white-space:nowrap}.ok{background:#dcfce7;color:#047857}.warn{background:#fef3c7;color:#b45309}.bad{background:#fee2e2;color:#dc2626}.neutral{background:#e2e8f0;color:#334155}
+    .report-note{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;border-radius:16px;padding:15px 16px;font-weight:850;line-height:1.45;margin-bottom:14px}.report-panel{padding:16px}.report-line{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid #e2e8f0;color:#334155}.report-line b{color:#0f172a}
+    @media(max-width:980px){body{overflow:auto}.app{display:block;height:auto}aside{position:static}.summary-row,.grid2,.insights{grid-template-columns:1fr}.metrics,.status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:24px 18px}}
+    @media(max-width:640px){.metrics,.status-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="brand-icon">📊</div><div><div class="brand-title">Analítica IA</div><div class="brand-sub">Panel de control</div></div></div>
+    <div class="nav-label">Secciones</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidebar-foot">Analítica educativa para Moodle</div>
+  </aside>
+  <main>
+    <h1>Panel de Analítica Asistida por IA</h1>
+    <p class="lead">Seguimiento de participación, aprendizaje, innovación y satisfacción del curso.</p>
+
+    <section id="resumen" class="view active">
+      <div class="section-label">Estado del archivo</div>
+      <div class="card status">
+        <div class="status-head"><div class="brand-icon">📊</div><div><div class="brand-title" style="color:var(--ink)">Analítica IA</div><div class="brand-sub" style="color:#64748b">Panel de control</div></div></div>
+        <div class="status-grid" id="statusGrid"></div>
+      </div>
+      <div class="summary-row">
+        <div>
+          <h2 class="chart-title">Herramientas</h2>
+          <div class="label">Subir archivo CSV</div>
+          <div class="filebox"><input type="file" id="csvInput" accept=".csv"><p class="metric-help">Si no cargas un CSV, se usan datos de ejemplo.</p></div>
+          <button class="btn" id="downloadTemplate">⬇ Descargar plantilla CSV</button>
+        </div>
+        <div>
+          <div class="section-label" style="margin-top:0">Indicadores principales</div>
+          <div class="metrics" id="metrics"></div>
+        </div>
+      </div>
+      <div class="section-label">Lectura rápida</div>
+      <div class="insights" id="insights"></div>
+      <h2 class="chart-title" style="margin-top:22px">Vista rápida por participante</h2>
+      <p class="chart-sub">Resumen compacto sin gráficos para revisar el estado general.</p>
+      <div class="table-wrap"><table id="quickTable"></table></div>
+    </section>
+
+    <section id="participacion" class="view">
+      <h2 class="chart-title">Participación y finalización</h2><p class="chart-sub">Detalle del avance individual y cumplimiento de actividades.</p>
+      <div class="grid2"><div class="card chart-card"><div id="finalChart"></div></div><div class="card chart-card"><div class="table-wrap"><table id="participantTable"></table></div></div></div>
+    </section>
+
+    <section id="aprendizaje" class="view">
+      <h2 class="chart-title">Aprendizaje</h2><p class="chart-sub">Comparación entre diagnóstico inicial, evaluación final y mejora individual.</p>
+      <div class="grid2"><div class="card chart-card"><div id="prepostChart"></div></div><div class="card chart-card"><div id="improveChart"></div></div></div>
+    </section>
+
+    <section id="innovacion" class="view">
+      <h2 class="chart-title">Innovación</h2><p class="chart-sub">Evaluación de creatividad, uso de IA, comparación del rediseño y presentación.</p>
+      <div class="grid2"><div class="card chart-card"><div id="innovationChart"></div></div><div class="card chart-card"><div id="criteriaChart"></div></div></div>
+    </section>
+
+    <section id="comentarios" class="view">
+      <h2 class="chart-title">Comentarios abiertos</h2><p class="chart-sub">Lectura rápida con clasificación automática.</p>
+      <div class="grid2"><div class="card chart-card"><div id="commentsChart"></div></div><div class="card chart-card"><div class="table-wrap"><table id="commentsTable"></table></div></div></div>
+    </section>
+
+    <section id="reporte" class="view">
+      <h2 class="chart-title">Reporte ejecutivo</h2><p class="chart-sub">Recomendaciones generadas a partir de los indicadores actuales.</p>
+      <div class="grid2"><div><div class="report-note" id="mainRec"></div><button class="btn" id="downloadReport">⬇ Descargar reporte TXT</button><div class="card report-panel" id="reportPanel"></div></div><div class="card chart-card"><div id="reportCommentsChart"></div></div></div>
+    </section>
+  </main>
+</div>
+
+<script>
+const NAV=[["resumen","📌 Resumen"],["participacion","🧩 Participación"],["aprendizaje","📘 Aprendizaje"],["innovacion","🎨 Innovación"],["comentarios","💬 Comentarios"],["reporte","📄 Reporte"]];
+const CRITERIA=["analisis_producto","uso_ia","comparacion_rediseno","presentacion_formato"];
+const COLORS=["#2563eb","#7c3aed","#10b981","#f59e0b","#ef4444","#06b6d4","#14b8a6","#f97316"];
+let rows=[], source="Datos de ejemplo";
+
+function parseCSV(text){
+  const out=[]; let row=[], cell="", q=false;
+  for(let i=0;i<text.length;i++){const c=text[i], n=text[i+1];
+    if(c=='"'&&q&&n=='"'){cell+='"';i++} else if(c=='"'){q=!q}
+    else if(c==","&&!q){row.push(cell);cell=""}
+    else if((c=="\n"||c=="\r")&&!q){if(c=="\r"&&n=="\n")i++;row.push(cell); if(row.some(x=>x.trim()!=""))out.push(row); row=[]; cell=""}
+    else cell+=c;
+  }
+  row.push(cell); if(row.some(x=>x.trim()!=""))out.push(row);
+  const head=out.shift().map(h=>h.trim());
+  return out.map(r=>Object.fromEntries(head.map((h,i)=>[h,(r[i]??"").trim()])));
+}
+function num(v){const n=Number(String(v).replace(",","."));return Number.isFinite(n)?n:0}
+function avg(arr,col){return arr.reduce((s,r)=>s+num(r[col]),0)/(arr.length||1)}
+function classify(text){const t=String(text||"").toLowerCase(); const bad=["difícil","dificil","confuso","problema","no entend","complicado","dificultad","fall","costó","costo"]; const good=["excelente","útil","util","aprend","interesante","mejor","innov","gust","ayud"]; if(bad.some(w=>t.includes(w)))return"Dificultad detectada"; if(good.some(w=>t.includes(w)))return"Positivo"; return"Neutral"}
+function prepare(data){return data.map(r=>{let o={...r}; o.finalizacion=num(o.actividades_completadas)/Math.max(num(o.total_actividades),1)*100; o.mejora_aprendizaje=num(o.postest)-num(o.pretest); o.indice_innovacion=CRITERIA.reduce((s,c)=>s+num(o[c]),0)/CRITERIA.length; o.categoria_comentario=classify(o.comentario_abierto); return o})}
+function fmt(n,d=1){return Number(n).toFixed(d)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
+function recommendations(){let rec=[]; if(avg(rows,"finalizacion")<75)rec.push("Revisar la carga de actividades y fortalecer el acompañamiento para mejorar la finalización."); if(avg(rows,"mejora_aprendizaje")<2)rec.push("Reforzar los ejercicios guiados antes de la evaluación final."); if(rows.some(r=>r.categoria_comentario=="Dificultad detectada"))rec.push("Analizar los comentarios con dificultad detectada para ajustar instrucciones, contenidos y soporte técnico."); if(avg(rows,"usabilidad")<3.8)rec.push("Simplificar la navegación y añadir una guía visual de entrega de actividades."); return rec.length?rec:["Los indicadores generales son favorables. Mantener seguimiento periódico por participante."]}
+
+function metric(label,value,icon,help){return `<div class="card metric"><div class="metric-icon">${icon}</div><div class="label">${label}</div><div class="metric-value">${value}</div><div class="metric-help">${help}</div></div>`}
+function renderStatus(){document.getElementById("statusGrid").innerHTML=[["Estado","✅ Datos listos"],["Fuente",source],["Participantes",rows.length],["Actualizado",new Date().toLocaleString("es-EC",{dateStyle:"short",timeStyle:"short"})]].map(x=>`<div class="small-card"><div class="label">${x[0]}</div><div class="value">${x[1]}</div></div>`).join("")}
+function renderMetrics(){document.getElementById("metrics").innerHTML=[
+  metric("Participantes",rows.length,"👥","Total registrados"),metric("Finalización",fmt(avg(rows,"finalizacion"))+"%","📈","Promedio del curso"),metric("Mejora",fmt(avg(rows,"mejora_aprendizaje")),"⭐","Postest - pretest"),metric("Innovación",fmt(avg(rows,"indice_innovacion"))+"/4","💡","Promedio de rúbrica"),
+  metric("Pretest",fmt(avg(rows,"pretest")),"📉","Diagnóstico inicial"),metric("Postest",fmt(avg(rows,"postest")),"🚀","Evaluación final"),metric("Satisfacción",fmt(avg(rows,"satisfaccion"))+"/5","😊","Percepción"),metric("Usabilidad",fmt(avg(rows,"usabilidad"))+"/5","🛡️","Facilidad de uso")
+].join("")}
+function renderInsights(){const top=[...rows].sort((a,b)=>b.finalizacion-a.finalizacion)[0]; const low=rows.filter(r=>r.finalizacion<70).length; const pos=rows.filter(r=>r.categoria_comentario=="Positivo").length/rows.length*100; const rec=recommendations()[0]; document.getElementById("insights").innerHTML=[
+["Mayor avance",`${top.id_participante} · ${fmt(top.finalizacion)}%`,"Participante con mejor cumplimiento de actividades."],["Atención docente",low,"Participantes por debajo del 70% de finalización."],["Clima del curso",`${fmt(pos)}%`,"Comentarios clasificados como positivos."],["Recomendación principal","Acción sugerida",rec]
+].map(x=>`<div class="card insight"><div class="label">${x[0]}</div><div class="big">${x[1]}</div><div class="metric-help">${x[2]}</div></div>`).join("")}
+function table(id, data, cols){document.getElementById(id).innerHTML=`<thead><tr>${cols.map(c=>`<th>${c[0]}</th>`).join("")}</tr></thead><tbody>${data.map(r=>`<tr>${cols.map(c=>`<td>${c[2]?c[2](r[c[1]],r):esc(r[c[1]])}</td>`).join("")}</tr>`).join("")}</tbody>`}
+function tag(v){let cls=v=="Positivo"?"ok":v=="Neutral"?"neutral":"bad";return`<span class="tag ${cls}">${esc(v)}</span>`}
+function pctTag(v){let cls=v>=80?"ok":v>=70?"warn":"bad";return`<span class="tag ${cls}">${fmt(v)}%</span>`}
+
+function barChart(id,title,data,opt){const w=900,h=390,p=55,max=opt.max||Math.max(...data.map(d=>d.value),1),bw=(w-p*2)/data.length*0.72,gap=(w-p*2)/data.length; let bars=data.map((d,i)=>{let x=p+i*gap+gap*.14, bh=(h-p*1.35)*d.value/max, y=h-p-bh; return `<rect class="bar" x="${x}" y="${y}" width="${bw}" height="${bh}" fill="${d.color||COLORS[i%COLORS.length]}"><title>${d.label}: ${fmt(d.value,opt.dec??1)}${opt.suffix||""}</title></rect><text x="${x+bw/2}" y="${y-6}" text-anchor="middle" font-size="11" font-weight="800">${fmt(d.value,opt.dec??1)}${opt.suffix||""}</text><text x="${x+bw/2}" y="${h-20}" text-anchor="end" transform="rotate(-90 ${x+bw/2} ${h-20})" font-size="11">${esc(d.label)}</text>`}).join(""); document.getElementById(id).innerHTML=`<h3 class="chart-title">${title}</h3><svg viewBox="0 0 ${w} ${h}"><line class="axis" x1="${p}" y1="${h-p}" x2="${w-p/2}" y2="${h-p}"/><line class="axis" x1="${p}" y1="${p/2}" x2="${p}" y2="${h-p}"/>${bars}</svg>`}
+function groupedPrepost(){const data=[...rows].sort((a,b)=>b.finalizacion-a.finalizacion).slice(0,20),w=900,h=390,p=55,max=10,gap=(w-p*2)/data.length,bw=gap*.28; let g=data.map((d,i)=>{let x=p+i*gap+gap*.18,pv=num(d.pretest),ov=num(d.postest),bp=(h-p*1.35)*pv/max,bo=(h-p*1.35)*ov/max; return `<rect x="${x}" y="${h-p-bp}" width="${bw}" height="${bp}" fill="#93c5fd"><title>${d.id_participante} pretest: ${pv}</title></rect><rect x="${x+bw+3}" y="${h-p-bo}" width="${bw}" height="${bo}" fill="#2563eb"><title>${d.id_participante} postest: ${ov}</title></rect><text x="${x+bw}" y="${h-18}" text-anchor="end" transform="rotate(-90 ${x+bw} ${h-18})" font-size="11">${d.id_participante}</text>`}).join(""); document.getElementById("prepostChart").innerHTML=`<h3 class="chart-title">Pretest vs postest</h3><div class="legend"><span><i class="dot" style="background:#93c5fd"></i>Pretest</span><span><i class="dot" style="background:#2563eb"></i>Postest</span></div><svg viewBox="0 0 ${w} ${h}"><line class="axis" x1="${p}" y1="${h-p}" x2="${w-p/2}" y2="${h-p}"/><line class="axis" x1="${p}" y1="${p/2}" x2="${p}" y2="${h-p}"/>${g}</svg>`}
+function lineImprove(){const data=[...rows].sort((a,b)=>b.finalizacion-a.finalizacion).slice(0,20),w=900,h=390,p=55,max=Math.max(...data.map(d=>d.mejora_aprendizaje),1),gap=(w-p*2)/(data.length-1); const pts=data.map((d,i)=>[p+i*gap,h-p-(h-p*1.45)*d.mejora_aprendizaje/max]); let circles=pts.map((pt,i)=>`<circle cx="${pt[0]}" cy="${pt[1]}" r="5" fill="#7c3aed"><title>${data[i].id_participante}: mejora ${fmt(data[i].mejora_aprendizaje)}</title></circle>`).join(""); document.getElementById("improveChart").innerHTML=`<h3 class="chart-title">Mejora de aprendizaje</h3><svg viewBox="0 0 ${w} ${h}"><polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#7c3aed" stroke-width="4"/>${circles}</svg>`}
+function renderReport(){const recs=recommendations(); document.getElementById("mainRec").innerHTML="✨ "+esc(recs[0]); const items=[["Participantes",rows.length],["Finalización",fmt(avg(rows,"finalizacion"))+"%"],["Promedio pretest",fmt(avg(rows,"pretest"),2)],["Promedio postest",fmt(avg(rows,"postest"),2)],["Mejora promedio",fmt(avg(rows,"mejora_aprendizaje"),2)],["Innovación promedio",fmt(avg(rows,"indice_innovacion"),2)+"/4"],["Usabilidad promedio",fmt(avg(rows,"usabilidad"),2)+"/5"],["Satisfacción promedio",fmt(avg(rows,"satisfaccion"),2)+"/5"]]; document.getElementById("reportPanel").innerHTML=`<h3 class="chart-title">Resumen del reporte</h3>${items.map(x=>`<div class="report-line"><span>${x[0]}</span><b>${x[1]}</b></div>`).join("")}`}
+function reportText(){return `REPORTE FINAL - PANEL DE ANALÍTICA ASISTIDA POR IA\nFecha: ${new Date().toLocaleString("es-EC")}\nParticipantes: ${rows.length}\nFinalización promedio: ${fmt(avg(rows,"finalizacion"),2)}%\nPromedio pretest: ${fmt(avg(rows,"pretest"),2)}\nPromedio postest: ${fmt(avg(rows,"postest"),2)}\nMejora promedio: ${fmt(avg(rows,"mejora_aprendizaje"),2)}\nInnovación promedio: ${fmt(avg(rows,"indice_innovacion"),2)}/4\nUsabilidad promedio: ${fmt(avg(rows,"usabilidad"),2)}/5\nSatisfacción promedio: ${fmt(avg(rows,"satisfaccion"),2)}/5\n\nRECOMENDACIONES:\n${recommendations().map(r=>"- "+r).join("\n")}`}
+
+function renderAll(){renderStatus();renderMetrics();renderInsights();const top=[...rows].sort((a,b)=>b.finalizacion-a.finalizacion).slice(0,20); table("quickTable",top,[["Id Participante","id_participante"],["Actividades Completadas","actividades_completadas"],["Total Actividades","total_actividades"],["Finalización","finalizacion",pctTag],["Pretest","pretest"],["Postest","postest"],["Mejora Aprendizaje","mejora_aprendizaje",v=>fmt(v)]]); table("participantTable",rows,[["Id Participante","id_participante"],["Actividades Completadas","actividades_completadas"],["Total Actividades","total_actividades"],["Finalización","finalizacion",pctTag],["Pretest","pretest"],["Postest","postest"]]); table("commentsTable",rows,[["Id Participante","id_participante"],["Comentario Abierto","comentario_abierto"],["Categoría","categoria_comentario",tag]]); barChart("finalChart","Top 20 participantes por finalización",top.map(r=>({label:r.id_participante,value:r.finalizacion})),{max:100,suffix:"%"}); groupedPrepost(); lineImprove(); barChart("innovationChart","Índice de innovación",top.map(r=>({label:r.id_participante,value:r.indice_innovacion,color:"#06b6d4"})),{max:4}); const crit=CRITERIA.map(c=>({label:c.replaceAll("_"," "),value:avg(rows,c),color:"#14b8a6"})); barChart("criteriaChart","Promedio por criterio",crit,{max:4}); const cats=["Positivo","Neutral","Dificultad detectada"].map((c,i)=>({label:c,value:rows.filter(r=>r.categoria_comentario==c).length,color:[COLORS[2],COLORS[3],COLORS[4]][i]})); barChart("commentsChart","Distribución de comentarios",cats,{dec:0}); barChart("reportCommentsChart","Comentarios clasificados",cats,{dec:0}); renderReport()}
+async function loadDefault(){try{const text=await (await fetch("datos_ejemplo.csv",{cache:"no-store"})).text(); rows=prepare(parseCSV(text));}catch(e){document.querySelector(".lead").insertAdjacentHTML("afterend",`<p class="report-note">No se pudo leer datos_ejemplo.csv. Carga el CSV desde Herramientas para activar el panel.</p>`); rows=[]} if(rows.length)renderAll()}
+
+document.getElementById("nav").innerHTML=NAV.map((n,i)=>`<button class="${i==0?"active":""}" data-view="${n[0]}">${n[1]}</button>`).join("");
+document.getElementById("nav").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x==b)); document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==b.dataset.view)); document.querySelector("main").scrollTop=0});
+document.getElementById("csvInput").addEventListener("change",e=>{const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{source="Archivo CSV cargado"; rows=prepare(parseCSV(r.result)); renderAll()}; r.readAsText(f,"utf-8")});
+function download(name,text,type="text/plain"){const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; a.click(); URL.revokeObjectURL(a.href)}
+document.getElementById("downloadReport").onclick=()=>download("reporte_dashboard_ia.txt",reportText());
+document.getElementById("downloadTemplate").onclick=()=>download("plantilla_datos.csv","id_participante,rubro_artesanal,actividades_completadas,total_actividades,pretest,postest,analisis_producto,uso_ia,comparacion_rediseno,presentacion_formato,usabilidad,satisfaccion,comentario_abierto\nP001,Cerámica,14,18,4,9,3,4,3,4,4.5,4.3,Comentario de ejemplo\n","text/csv");
+loadDefault();
+</script>
+</body>
+</html>
